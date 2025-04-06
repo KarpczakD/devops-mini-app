@@ -25,11 +25,8 @@ jobs:
     - name: Check if Docker is available
       run: docker --version
 
-    - name: Check if Python is available
-      run: python --version
-
-    - name: Check if Pip is available
-      run: pip --version
+    - name: Check if Docker Compose is available
+      run: docker-compose --version
 
     - name: Build and push Docker image
       uses: docker/build-push-action@v3
@@ -40,8 +37,9 @@ jobs:
         build-args: |
           BUILD_VERSION=latest
 
-    # Uruchomienie testów
-    - name: Run tests
+    # Uruchomienie aplikacji i testów z Docker Compose
+    - name: Run tests with Docker Compose
       run: |
-        docker run --rm -v $(pwd):/app -w /app -e PYTHONPATH=/app python:3.10-slim bash -c "pip install -r requirements.txt && pytest tests/test_app.py"
-            
+        docker-compose up -d  # Uruchamia kontener w tle
+        docker-compose exec web pytest tests/test_app.py  # Uruchamia testy w kontenerze
+        docker-compose down  # Zamyka kontenery po zakończeniu testów

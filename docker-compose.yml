@@ -1,0 +1,19 @@
+version: '3.8'
+
+services:
+  web:
+    build: .
+    ports:
+      - "5000:5000"  # Mapowanie portów z kontenera na maszynę lokalną
+    environment:
+      - FLASK_APP=app.py
+      - FLASK_ENV=development
+    volumes:
+      - .:/app  # Mapowanie katalogu projektu w kontenerze
+    command: flask run --host=0.0.0.0  # Uruchamia aplikację Flaska
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
