@@ -43,5 +43,4 @@ jobs:
     # Uruchomienie testów
     - name: Run tests
       run: |
-        docker run --rm -v $(pwd):/app -w /app python:3.10-slim pip install -r requirements.txt
-        docker run --rm -v $(pwd):/app -w /app python:3.10-slim pytest
+        docker run --rm -v $(pwd):/app -w /app python:3.10-slim bash -c "pip install -r requirements.txt && pytest"
