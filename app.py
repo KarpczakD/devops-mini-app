@@ -2,9 +2,13 @@ from flask import Flask
 
 app = Flask(__name__)
 
-@app.route("/")
-def hello():
-    return "Hello from DevOps!"
+@app.route('/')
+def homepage():
+    return 'Welcome to the homepage'
 
-if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000)
+@app.route('/contact', methods=['POST'])
+def contact():
+    return 'Thank you for your message!'
+
+if __name__ == '__main__':
+    app.run(debug=True)
