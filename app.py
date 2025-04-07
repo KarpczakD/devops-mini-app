@@ -8,7 +8,7 @@ USER_CREDENTIALS = {'username': 'admin', 'password': 'password'}
 
 @app.route('/')
 def homepage():
-    return 'Welcome to the homepage'
+    return render_template('index.html')  # Strona główna z komunikatami flash
 
 @app.route('/contact', methods=['GET', 'POST'])
 def contact():
@@ -33,6 +33,22 @@ def login():
         else:
             flash('Invalid credentials. Please try again.', 'danger')
     return render_template('login.html')
+
+@app.route('/change-password', methods=['GET', 'POST'])
+def change_password():
+    if request.method == 'POST':
+        new_password = request.form['new_password']
+        confirm_password = request.form['confirm_password']
+
+        if new_password != confirm_password:
+            flash('Passwords do not match. Please try again.', 'danger')
+        else:
+            # Zaktualizuj hasło użytkownika (na razie tylko w pamięci)
+            USER_CREDENTIALS['password'] = new_password
+            flash('Password changed successfully!', 'success')
+            return redirect(url_for('homepage'))
+
+    return render_template('change_password.html')
 
 if __name__ == '__main__':
     app.run(debug=True)

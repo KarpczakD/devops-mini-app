@@ -47,3 +47,17 @@ def test_login_failure(client):
     response = client.post('/login', data={'username': 'wronguser', 'password': 'wrongpass'})
     assert response.status_code == 200  # Powinno pozostać na stronie logowania
     assert b'Invalid credentials. Please try again.' in response.data  # Oczekiwany komunikat błędu
+
+def test_change_password_success(client):
+    """Testujemy udaną zmianę hasła."""
+    response = client.post('/change-password', data={
+        'new_password': 'newpassword123',
+        'confirm_password': 'newpassword123'
+    })
+    assert response.status_code == 302  # Przekierowanie po udanej zmianie hasła
+    assert response.location == 'http://localhost/'  # Sprawdź, czy przekierowanie prowadzi na stronę główną
+
+    # Teraz sprawdzimy, czy komunikat o sukcesie pojawi się na stronie głównej
+    response = client.get('/')
+    assert b'Password changed successfully!' in response.data  # Oczekiwany komunikat sukcesu
+
