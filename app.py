@@ -10,5 +10,9 @@ def homepage():
 def contact():
     return 'Thank you for your message!'
 
+@app.route('/about')
+def about():
+    return "This is a simple DevOps demo app."
+
 if __name__ == '__main__':
     app.run(debug=True)

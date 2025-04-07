@@ -29,3 +29,9 @@ def test_not_found(client):
     """Testujemy stronę 404 dla nieistniejącego endpointa.""" 
     response = client.get('/nonexistent')
     assert response.status_code == 404
+
+def test_about_page(client):
+    """Testujemy stronę o aplikacji."""
+    response = client.get('/about')
+    assert response.status_code == 200
+    assert b'DevOps demo app' in response.data
