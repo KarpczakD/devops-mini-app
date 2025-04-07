@@ -17,7 +17,10 @@ def test_homepage(client):
     """Testujemy główną stronę aplikacji."""
     response = client.get('/')
     assert response.status_code == 200
-    assert b'Welcome to the homepage' in response.data  # Przykładowy tekst na stronie
+    # Sprawdź, czy na stronie znajdują się linki do logowania i zmiany hasła
+    assert b'<a href="/login">Login</a>' in response.data
+    assert b'<a href="/change-password">Change Password</a>' in response.data
+
 
 def test_contact_form(client):
     """Testujemy formularz kontaktowy.""" 
@@ -55,7 +58,8 @@ def test_change_password_success(client):
         'confirm_password': 'newpassword123'
     })
     assert response.status_code == 302  # Przekierowanie po udanej zmianie hasła
-    assert response.location == 'http://localhost/'  # Sprawdź, czy przekierowanie prowadzi na stronę główną
+    # Porównaj tylko ścieżkę, nie pełny URL
+    assert response.location == '/'  # Sprawdź, czy przekierowanie prowadzi na stronę główną
 
     # Teraz sprawdzimy, czy komunikat o sukcesie pojawi się na stronie głównej
     response = client.get('/')
