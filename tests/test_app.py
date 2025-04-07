@@ -5,7 +5,7 @@ import pytest
 # Dodaj ścieżkę do katalogu, w którym znajduje się app.py
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
-from app import app  # Importuj aplikację
+from app import app  # Importujemy aplikację
 
 @pytest.fixture
 def client():
@@ -23,7 +23,7 @@ def test_contact_form(client):
     """Testujemy formularz kontaktowy.""" 
     response = client.post('/contact', data={'name': 'John', 'message': 'Hello'})
     assert response.status_code == 200
-    assert b'Thank you for your message!' in response.data  # Oczekiwany tekst na stronie po wysłaniu formularza
+    assert b'Thank you for your message, John!' in response.data  # Uwzględniamy imię w odpowiedzi
 
 def test_not_found(client):
     """Testujemy stronę 404 dla nieistniejącego endpointa.""" 
@@ -35,3 +35,15 @@ def test_about_page(client):
     response = client.get('/about')
     assert response.status_code == 200
     assert b'DevOps demo app' in response.data
+
+def test_login_success(client):
+    """Testujemy poprawne logowanie."""
+    response = client.post('/login', data={'username': 'admin', 'password': 'password'})
+    assert response.status_code == 302  # Status 302 oznacza przekierowanie po udanym logowaniu
+    assert response.location == '/'  # Oczekujemy tylko ścieżki, nie pełnego URL
+
+def test_login_failure(client):
+    """Testujemy niepoprawne logowanie."""
+    response = client.post('/login', data={'username': 'wronguser', 'password': 'wrongpass'})
+    assert response.status_code == 200  # Powinno pozostać na stronie logowania
+    assert b'Invalid credentials. Please try again.' in response.data  # Oczekiwany komunikat błędu
