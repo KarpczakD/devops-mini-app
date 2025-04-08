@@ -6,6 +6,9 @@ app.secret_key = 'your_secret_key'  # Potrzebne do przechowywania sesji (np. fla
 # Statyczne dane logowania (na razie tylko dla testów)
 USER_CREDENTIALS = {'username': 'admin', 'password': 'password'}
 
+# Tymczasowy "magazyn" na wiadomości kontaktowe
+contact_messages = []
+
 @app.route('/')
 def homepage():
     return render_template('index.html')  # Strona główna z komunikatami flash
@@ -15,8 +18,22 @@ def contact():
     if request.method == 'POST':
         name = request.form['name']
         message = request.form['message']
-        return f'Thank you for your message, {name}!'
+
+        if not name or not message:
+            flash('Please fill in all fields.', 'danger')
+            return redirect(url_for('contact'))
+
+        # Dodanie wiadomości do kontaktu
+        contact_messages.append({'name': name, 'message': message})
+        
+        flash(f'Thank you for your message, {name}!', 'success')
+        return redirect(url_for('contact'))
+
     return render_template('contact.html')
+
+@app.route('/messages')
+def messages():
+    return render_template('messages.html', messages=contact_messages)
 
 @app.route('/about')
 def about():

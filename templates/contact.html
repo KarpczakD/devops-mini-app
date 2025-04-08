@@ -1,19 +1,35 @@
-<!-- templates/contact.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Contact Form</title>
+    <title>Contact</title>
 </head>
 <body>
     <h1>Contact Us</h1>
-    <form method="POST">
-        <label for="name">Your Name:</label>
-        <input type="text" id="name" name="name" required><br><br>
-        <label for="message">Your Message:</label><br>
-        <textarea id="message" name="message" rows="4" cols="50" required></textarea><br><br>
-        <button type="submit">Send Message</button>
+
+    <!-- Flash messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <ul>
+            {% for category, message in messages %}
+                <li class="{{ category }}">{{ message }}</li>
+            {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+
+    <!-- Contact form -->
+    <form method="POST" action="{{ url_for('contact') }}">
+        <label for="name">Name:</label><br>
+        <input type="text" name="name" id="name"><br><br>
+
+        <label for="message">Message:</label><br>
+        <textarea name="message" id="message" rows="4" cols="40"></textarea><br><br>
+
+        <button type="submit">Send</button>
     </form>
+
+    <p><a href="{{ url_for('homepage') }}">Back to homepage</a></p>
 </body>
 </html>
