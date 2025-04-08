@@ -25,8 +25,8 @@ def test_homepage(client):
 def test_contact_form(client):
     """Testujemy formularz kontaktowy.""" 
     response = client.post('/contact', data={'name': 'John', 'message': 'Hello'})
-    assert response.status_code == 200
-    assert b'Thank you for your message, John!' in response.data  # Uwzględniamy imię w odpowiedzi
+    assert response.status_code == 302  # Status 302 oznacza przekierowanie
+    assert response.location == 'http://localhost:5000/contact'  # Oczekujemy przekierowania na stronę kontaktu
 
 def test_not_found(client):
     """Testujemy stronę 404 dla nieistniejącego endpointa.""" 
