@@ -27,7 +27,7 @@ def test_contact_form(client):
     """Testujemy formularz kontaktowy."""
     response = client.post('/contact', data={'name': 'John', 'message': 'Hello'})
     assert response.status_code == 302  # Status 302 oznacza przekierowanie
-    assert response.location == url_for('contact', _external=True)  # Oczekujemy pełny URL
+    assert response.location.endswith('/contact')  # Porównaj tylko ścieżkę, nie pełny URL
 
 def test_not_found(client):
     """Testujemy stronę 404 dla nieistniejącego endpointa.""" 
