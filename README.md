@@ -15,7 +15,7 @@ Aby zainstalować aplikację i uruchomić ją lokalnie, wykonaj poniższe kroki:
 ### Krok 1: Klonowanie repozytorium
 Klonuj repozytorium na swoje lokalne urządzenie:
 ```
-git clone https://github.com/karpczakD/devops-mini-app.git
+git clone https://github.com/KarpczakD/devops-mini-app.git
 cd devops-mini-app
 ```
 ### Krok 2: Instalacja zależności
